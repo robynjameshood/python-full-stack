@@ -1,0 +1,110 @@
+openapi: 3.0.0 #defines the version of open api
+
+info: # this defines the information block at te top of the api UI
+ title: RP Flask REST API # title that's included in the Connexion UI
+ description: An API to store users # description of the usage of the API
+ version: "1.0.0" # version
+
+# add servers and urls that define the pathing/routes
+servers:
+ - url: /api # base api url
+
+components:
+  schemas:
+   User:
+     type: object # determines the make-up of the incoming posted data
+     required:
+       - surname
+     properties: # individual property names of the object
+       id:
+         type: integer
+       firstname: # name of the property
+         type: string # expected type
+       surname:
+         type: string
+   UserToRemove:
+     type: object
+     required:
+       - id
+     properties:
+       id:
+         type: integer
+
+paths: # relative to the server url above
+ /users: # endpoint url relative to the base
+   get: # endpoint type
+     operationId: app.get_user # function call to app.py
+     tags: # grouping tag
+      - Retrieve # name of the tag
+     summary: "Gets the list of users" # UI display text for te endpoint
+     responses:
+       200:
+         description: "Successfully retrieved user list"
+         content:
+           application/json:
+             schema:
+               type: string
+               example: "Users retrieved"
+
+   post:
+     operationId: app.insert_user
+     tags:
+       - Modify
+     summary: "Inserts a new user"
+     requestBody:
+       description: "creates a new user" # api gui descriptor for the response body
+       required: True
+       content: # how the content should be defined in the UI
+         application/json: # content type
+           schema:
+             x-body-name: newUser # newUser references the parameter passed into the function app.insert_user
+             $ref: "#/components/schemas/User" # references the User schema - properties and their data-types
+     responses:
+       204:
+         description: "User inserted"
+       400:
+         description: Bad Request. Property Missing     
+ /users/delete:
+   post:
+     operationId: app.delete_by_id
+     tags:
+       - Modify
+     summary: "Deletes a specific user"
+     requestBody:
+       description: "Deletes a user"
+       required: True
+       content:
+         application/json:
+           schema:
+             x-body-name: userToDelete
+             $ref: '#/components/schemas/UserToRemove'
+     responses:
+       200:
+         description: "User deleted"
+
+ /create-table: # endpoint url relative to the base
+   get: # endpoint type
+     operationId: app.create_new_table # function call to app.py
+     tags: # grouping tag
+      - Retrieve # name of the tag
+     summary: "Gets the list of users" # UI display text for te endpoint
+     responses:
+       200:
+         description: "Successfully retrieved user list"
+ /users/update:
+   post:
+     operationId: app.update_user_data
+     tags:
+        - Modify
+     summary: Updates a specific user's details
+     requestBody:
+       description: Updates a user
+       required: True
+       content:
+         application/json:
+           schema:
+             x-body-name: updateUser
+             $ref: "#/components/schemas/User"
+     responses:
+       200:
+         description: User successfully updated

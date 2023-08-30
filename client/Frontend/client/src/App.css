@@ -1,0 +1,42 @@
+
+
+.content {
+  
+}
+
+.insert-user {
+  display: flex;
+  flex-direction: column;
+  background-color: lightgray;
+  border-radius: 5px;
+}
+
+.update-user, .delete-user {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  margin: auto;
+}
+
+.view-users {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  width: 60%;
+  row-gap: 10px;
+  margin: auto;
+}
+
+.id, .name, .surname {
+  height: 20px;
+}
+
+.id-rowdata, .first-rowdata, .surname-rowdata {
+  height: 25px;
+  background-color: lightblue;
+}
